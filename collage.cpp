@@ -1,8 +1,9 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 struct Student {
-    int id;          // Unique Student ID
+    int id;
     string name;
     string className;
     string phone;
@@ -10,11 +11,44 @@ struct Student {
 
 Student students[100];
 int count = 0;
-int nextID = 1001; // Starting Student ID
+int nextID = 1001;
 
-// Add a new student
+// Save students to file
+void saveToFile() {
+    ofstream file("students.txt");
+
+    for(int i = 0; i < count; i++) {
+        file << students[i].id << " "
+             << students[i].name << " "
+             << students[i].className << " "
+             << students[i].phone << endl;
+    }
+
+    file.close();
+}
+
+// Load students from file
+void loadFromFile() {
+    ifstream file("students.txt");
+
+    while(file >> students[count].id
+               >> students[count].name
+               >> students[count].className
+               >> students[count].phone) {
+
+        if(students[count].id >= nextID)
+            nextID = students[count].id + 1;
+
+        count++;
+    }
+
+    file.close();
+}
+
+// Add student
 void addStudent() {
-    students[count].id = nextID++; // Assign and increment ID
+
+    students[count].id = nextID++;
 
     cout << "\nEnter Student Name: ";
     cin >> students[count].name;
@@ -27,10 +61,12 @@ void addStudent() {
 
     count++;
 
+    saveToFile(); // save after adding
+
     cout << "Student added successfully! ID: " << students[count-1].id << endl;
 }
 
-// Show all students
+// Show students
 void showStudents() {
 
     if(count == 0) {
@@ -48,7 +84,7 @@ void showStudents() {
     }
 }
 
-// Search student by any detail
+// Search student
 void searchStudent() {
 
     string query;
@@ -59,7 +95,6 @@ void searchStudent() {
 
     for(int i = 0; i < count; i++) {
 
-        // Check if query matches ID, name, class, or phone
         if(to_string(students[i].id) == query ||
            students[i].name == query ||
            students[i].className == query ||
@@ -79,7 +114,7 @@ void searchStudent() {
         cout << "No matching student found.\n";
 }
 
-// Update student by ID
+// Update student
 void updateStudent() {
     int id;
     cout << "\nEnter Student ID to update: ";
@@ -87,6 +122,7 @@ void updateStudent() {
 
     for(int i = 0; i < count; i++) {
         if(students[i].id == id) {
+
             cout << "Enter new name: ";
             cin >> students[i].name;
 
@@ -95,6 +131,8 @@ void updateStudent() {
 
             cout << "Enter new phone: ";
             cin >> students[i].phone;
+
+            saveToFile(); // save updated data
 
             cout << "Student updated successfully!\n";
             return;
@@ -105,6 +143,8 @@ void updateStudent() {
 }
 
 int main() {
+
+    loadFromFile(); // load old students when program starts
 
     int choice;
 
