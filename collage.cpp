@@ -15,7 +15,7 @@ int nextID = 1001;
 
 // Save students to file
 void saveToFile() {
-    ofstream file("students.txt");
+    ofstream file("students.csv");
 
     for(int i = 0; i < count; i++) {
         file << students[i].id << " "
@@ -29,7 +29,7 @@ void saveToFile() {
 
 // Load students from file
 void loadFromFile() {
-    ifstream file("students.txt");
+    ifstream file("students.csv");
 
     while(file >> students[count].id
                >> students[count].name
