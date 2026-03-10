@@ -18,9 +18,9 @@ void saveToFile() {
     ofstream file("students.csv");
 
     for(int i = 0; i < count; i++) {
-        file << students[i].id << " "
-             << students[i].name << " "
-             << students[i].className << " "
+        file << students[i].id << ","
+             << students[i].name << ","
+             << students[i].className << ","
              << students[i].phone << endl;
     }
 
