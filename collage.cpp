@@ -28,13 +28,22 @@ void saveToFile() {
 }
 
 // Load students from file
-void loadFromFile() {
-    ifstream file("students.csv");
+ void loadFromFile() {
 
-    while(file >> students[count].id
-               >> students[count].name
-               >> students[count].className
-               >> students[count].phone) {
+    ifstream file("students.csv");
+    string line;
+
+    while(getline(file, line)) {
+
+        stringstream ss(line);
+        string temp;
+
+        getline(ss, temp, ',');
+        students[count].id = stoi(temp);
+
+        getline(ss, students[count].name, ',');
+        getline(ss, students[count].className, ',');
+        getline(ss, students[count].phone, ',');
 
         if(students[count].id >= nextID)
             nextID = students[count].id + 1;
